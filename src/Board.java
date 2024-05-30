@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class Board {
 
         Men[] whiteP1 = {new S(36,"w"),new S(25,"w"),new T(16,"w"), new T(9,"w"),new C(4,"w"), new C(1,"w")};
-        Men[] blackP1 = {new S(64,"w"),new S(49,"w"),new T(36,"w"), new T(25,"w"),new C(16,"w")};
+        Men[] blackP1 = {new S(64,"b"),new S(49,"b"),new T(36,"b"), new T(25,"b"),new C(16,"b")};
         P whiteP = new P( new ArrayList<Men>(Arrays.asList(whiteP1)),"w");
         P blackP = new P( new ArrayList<Men>(Arrays.asList(blackP1)),"b");
         private Men[][] board = {
@@ -19,12 +19,12 @@ public class Board {
                 {null,null,new C(3,"b"),new C(5,"b"),new C(7,"b"),new C(9,"b"),null, null},
                 {null,null,null,null,null,null,null,null},
                 {null,null,null,null,null,null,null,null},
+                {new S(0,"w"),null,null,null,null,null,null,null},
+                {new S(0,"b"),new S(0,"w"),new S(0,"b"),new S(0,"w"),null,null,null,null},
+                {new S(0,"w"),null,null,null,null,null,null,null},
                 {null,null,null,null,null,null,null,null},
                 {null,null,null,null,null,null,null,null},
-                {null,null,null,null,null,null,null,null},
-                {null,null,null,null,null,null,null,null},
-                {null,null,null,null,null,null,null,null},
-                {null,null,null,null,null,null,null,null},
+                {null,null,new S(8,"b"),null,null,null,null,null},
                 {null,null,new C(8,"w"),new C(6,"w"),new C(4,"w"),new C(2,"w"),null, null},
                 {new T(81,"w"),new T(72,"w"),new C(64,"w"),new C(36,"w"),new C(16,"w"),new C(4,"w"),new T(6,"w"), new T(9,"w")},
                 {new S(153,"w"),whiteP,new T(49,"w"),new T(42,"w"),new T(20,"w"),new T(25,"w"),new S(45,"w"), new S(15,"w")},
@@ -169,8 +169,16 @@ public class Board {
         public void assault(int x, int y, int targetX,int targetY) {
                 ArrayList<int[]> destinations = board[x][y].moves(x,y);
                 int[] target = {targetX,targetY};
+                boolean passed = false;
+                for(int[] i: destinations) {
+                        if(Arrays.equals(i,target)) {
+                                passed = true;
+                                break;
+                        }
+                }
+                System.out.println(passed);
                 //checks if target piece is in range of attacking piece, then checks whether it can be destroyed
-                if (destinations.contains(target) && board[x][y].isEnemy(board[targetX][targetY])) {
+                if (passed && board[x][y].isEnemy(board[targetX][targetY])) {
                         if(board[targetX][targetY].isDestroyed(board[x][y].getVal())) {
                                 board[targetX][targetY] = null;
                         }
@@ -213,15 +221,15 @@ public class Board {
          */
         public void deceit(int x, int y) {
                 //checks if piece isnt on corner (deciet is impossible on corner)
-                if( !((x==0  && y == 0) || (x==7  && y == 0) || (x==0  && y == 15) || (x==7  && y == 15))) {
-                        //checks if we are on left/right side of board, where it only tests whether the 2 attackers are up and down
-                        if(x == 0 || x == 7) {
+                if( !((x==0  && y == 0) || (x==15  && y == 0) || (x==0  && y == 7) || (x==15  && y == 7))) {
+                        //checks if we are on top/bottom side of board, where it only tests whether the 2 attackers are left and right
+                        if(x == 0 || x == 15) {
                               if(board[x][y].isDestroyed(board[x][y-1].getVal()+board[x][y+1].getVal())) {
                                       board[x][y] = null;
                               }
                         }
-                        //checks if we are on top/bottom side of board, where it only tests whether the 2 attackers are left and right
-                        else if(y == 0 || y == 15) {
+                        //checks if we are on left/right side of board, where it only tests whether the 2 attackers are up and down
+                        else if(y == 0 || y == 7) {
                                 if(board[x][y].isDestroyed(board[x-1][y].getVal()+board[x+1][y].getVal())) {
                                         board[x][y] = null;
                                 }

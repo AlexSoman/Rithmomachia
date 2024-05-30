@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         //sets win condition, turn, scanner and boar
-        int win = 1;
+        int win = 3;
         String turn  = "w";
         Scanner inp = new Scanner(System.in);
         Board board = new Board();
@@ -85,6 +85,7 @@ public class Main {
             // updates turn and board
             turn = board.opposite(turn);
             board.draw();
+            inp.nextLine();
         }
         //prints winner.
         System.out.println("Player "+board.opposite(turn)+" wins!");
