@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- *  Board class which creates the board which creates the board and handles drawing the board as well as captures and moves
+ *  Board class which creates the board and handles drawing the board as well as captures and moves
  *
  */
 public class Board {
